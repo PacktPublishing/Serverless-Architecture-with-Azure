@@ -33,7 +33,7 @@ Break – 10 Minutes
 
 ### DAY 2 – 4 hours:
 
-## SECTION 5: Understanding Azure Event Grid – 20 Minutes  
+## SECTION 4: Understanding Azure Event Grid – 20 Minutes  
 
 -	What is the Azure Event Grid?
 -	Why should I use them?
@@ -45,7 +45,7 @@ Break – 10 Minutes
 Q & A – 5 Minutes
 Break – 10 Minutes
 
-## SECTION 6: Using Serverless in other Azure Resources – 20 Minutes  
+## SECTION 5: Using Serverless in other Azure Resources – 20 Minutes  
 
 -	Using Azure Functions in CosmosDB
 -	Using Logic App to respond to the event in Dynamics
@@ -56,7 +56,7 @@ Break – 10 Minutes
 Q & A – 5 Minutes
 Break  – 10 Minutes
 
-## SECTION 7: Developing modern Solutions using Serverless – 20 Minutes 
+## SECTION 6: Developing modern Solutions using Serverless – 20 Minutes 
 
 -	Architecting Serverless solutions
 -	Developing Serverless solutions
@@ -66,7 +66,7 @@ Break  – 10 Minutes
 Q & A – 5 Minutes
 Break – 10 Minutes
 
-## SECTION 8: Developing your Serverless using Azure DevOps – 20 Minutes 
+## SECTION 7: Developing your Serverless using Azure DevOps – 20 Minutes 
 
 -	Using Azure DevOps with Serverless solution
 
