@@ -1,0 +1,229 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "metadata": {
+        "description": "Name of the Logic App."
+      }
+    },
+    "logicAppLocation": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "allowedValues": [
+        "[resourceGroup().location]",
+        "eastasia",
+        "southeastasia",
+        "centralus",
+        "eastus",
+        "eastus2",
+        "westus",
+        "northcentralus",
+        "southcentralus",
+        "northeurope",
+        "westeurope",
+        "japanwest",
+        "japaneast",
+        "brazilsouth",
+        "australiaeast",
+        "australiasoutheast",
+        "southindia",
+        "centralindia",
+        "westindia",
+        "canadacentral",
+        "canadaeast",
+        "uksouth",
+        "ukwest",
+        "westcentralus",
+        "westus2"
+      ],
+      "metadata": {
+        "description": "Location of the Logic App."
+      }
+    },
+    "dynamicscrmonline_1_Connection_Name": {
+      "type": "string",
+      "defaultValue": "dynamicscrmonline"
+    },
+    "dynamicscrmonline_1_Connection_DisplayName": {
+      "type": "string",
+      "defaultValue": "gleonardo@tampacc.org"
+    },
+    "office365_1_Connection_Name": {
+      "type": "string",
+      "defaultValue": "office365"
+    },
+    "office365_1_Connection_DisplayName": {
+      "type": "string",
+      "defaultValue": "gleonardo@tampacc.org"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('logicAppName')]",
+      "type": "Microsoft.Logic/workflows",
+      "location": "[parameters('logicAppLocation')]",
+      "tags": {
+        "displayName": "LogicApp"
+      },
+      "apiVersion": "2016-06-01",
+      "properties": {
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "actions": {
+            "Send_an_email": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['office365']['connectionId']"
+                  }
+                },
+                "method": "post",
+                "body": {
+                  "To": "gleonardo@webonology.com",
+                  "Subject": "Lead Transfered to Contact",
+                  "Body": "Name:  \nContact ID: "
+                },
+                "path": "/Mail"
+              },
+              "runAfter": {
+                "Create_a_new_record": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Create_a_new_record": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['dynamicscrmonline']['connectionId']"
+                  }
+                },
+                "method": "post",
+                "body": {
+                  "lastname": "@{triggerBody()?['lastname']}@{triggerBody()?['lastname']}",
+                  "_parentcustomerid_type": "",
+                  "firstname": "@triggerBody()?['firstname']",
+                  "merged": false,
+                  "_address1_addresstypecode_label": "",
+                  "_address2_addresstypecode_label": "Default Value",
+                  "_address3_addresstypecode_label": "",
+                  "isbackofficecustomer": false,
+                  "creditonhold": false,
+                  "_customersizecode_label": "Default Value",
+                  "donotbulkemail": false,
+                  "donotbulkpostalmail": false,
+                  "donotemail": false,
+                  "donotfax": false,
+                  "donotpostalmail": false,
+                  "donotphone": false,
+                  "_educationcode_label": "Default Value",
+                  "followemail": true,
+                  "msdyn_gdproptout": false,
+                  "_gendercode_label": "",
+                  "_haschildrencode_label": "Default Value",
+                  "_leadsourcecode_label": "Default Value",
+                  "_familystatuscode_label": "",
+                  "marketingonly": false,
+                  "_msdyn_orgchangestatus_label": "No",
+                  "_ownerid_type": "",
+                  "participatesinworkflow": false,
+                  "_paymenttermscode_label": "",
+                  "_preferredappointmentdaycode_label": "",
+                  "_preferredcontactmethodcode_label": "Any",
+                  "_preferredappointmenttimecode_label": "Morning",
+                  "_customertypecode_label": "Default Value",
+                  "_accountrolecode_label": "",
+                  "donotsendmm": false,
+                  "_shippingmethodcode_label": "Default Value",
+                  "_statuscode_label": "",
+                  "_territorycode_label": "Default Value"
+                },
+                "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('orgf4889f47.crm'))}/tables/@{encodeURIComponent(encodeURIComponent('contacts'))}/items"
+              },
+              "runAfter": {}
+            }
+          },
+          "parameters": {
+            "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+            }
+          },
+          "triggers": {
+            "When_a_record_is_created": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['dynamicscrmonline']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "/datasets/@{encodeURIComponent(encodeURIComponent('orgf4889f47.crm'))}/tables/@{encodeURIComponent(encodeURIComponent('leads'))}/onnewitems"
+              },
+              "recurrence": {
+                "frequency": "Minute",
+                "interval": 3
+              },
+              "splitOn": "@triggerBody()?['value']"
+            }
+          },
+          "contentVersion": "1.0.0.0",
+          "outputs": {}
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "office365": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', parameters('logicAppLocation'), '/managedApis/', 'office365')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('office365_1_Connection_Name'))]",
+                "connectionName": "[parameters('office365_1_Connection_Name')]"
+              },
+              "dynamicscrmonline": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', parameters('logicAppLocation'), '/managedApis/', 'dynamicscrmonline')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('dynamicscrmonline_1_Connection_Name'))]",
+                "connectionName": "[parameters('dynamicscrmonline_1_Connection_Name')]"
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', parameters('office365_1_Connection_Name'))]",
+        "[resourceId('Microsoft.Web/connections', parameters('dynamicscrmonline_1_Connection_Name'))]"
+      ]
+    },
+    {
+      "type": "MICROSOFT.WEB/CONNECTIONS",
+      "apiVersion": "2016-06-01",
+      "name": "[parameters('dynamicscrmonline_1_Connection_Name')]",
+      "location": "[parameters('logicAppLocation')]",
+      "properties": {
+        "api": {
+          "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', parameters('logicAppLocation'), '/managedApis/', 'dynamicscrmonline')]"
+        },
+        "displayName": "[parameters('dynamicscrmonline_1_Connection_DisplayName')]"
+      }
+    },
+    {
+      "type": "MICROSOFT.WEB/CONNECTIONS",
+      "apiVersion": "2016-06-01",
+      "name": "[parameters('office365_1_Connection_Name')]",
+      "location": "[parameters('logicAppLocation')]",
+      "properties": {
+        "api": {
+          "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', parameters('logicAppLocation'), '/managedApis/', 'office365')]"
+        },
+        "displayName": "[parameters('office365_1_Connection_DisplayName')]"
+      }
+    }
+  ],
+  "outputs": {}
+}

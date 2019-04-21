@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.539
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "Serverless-LogicApps", "Serverless-Local-Development\Serverless-LogicApps.deployproj", "{76CFE46F-9996-4D67-B4A3-2003E151BEB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serverless-Functions", "Serverless-Functions\Serverless-Functions.csproj", "{77B2C46A-771B-40D7-BDF5-EEF49C51FEAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{76CFE46F-9996-4D67-B4A3-2003E151BEB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76CFE46F-9996-4D67-B4A3-2003E151BEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76CFE46F-9996-4D67-B4A3-2003E151BEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76CFE46F-9996-4D67-B4A3-2003E151BEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77B2C46A-771B-40D7-BDF5-EEF49C51FEAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77B2C46A-771B-40D7-BDF5-EEF49C51FEAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77B2C46A-771B-40D7-BDF5-EEF49C51FEAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77B2C46A-771B-40D7-BDF5-EEF49C51FEAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {614B6DA1-1764-4771-BACB-48780672DE8A}
+	EndGlobalSection
+EndGlobal
